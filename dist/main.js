@@ -4,15 +4,17 @@ var TypeVehicule;
     TypeVehicule["BUS"] = "Bus";
     TypeVehicule["VOITURE"] = "Voiture";
 })(TypeVehicule || (TypeVehicule = {}));
-;
 class Vehicule {
     constructor(_immatriculation, _type) {
         this._immatriculation = _immatriculation;
         this._type = _type;
     }
-    ;
-    get immatriculation() { return this._immatriculation; }
-    get type() { return this._type; }
+    get immatriculation() {
+        return this._immatriculation;
+    }
+    get type() {
+        return this._type;
+    }
 }
 class Voiture extends Vehicule {
     constructor(immatriculation) {
@@ -28,8 +30,9 @@ class ListeVehicules {
     constructor() {
         this._liste = [];
     }
-    get liste() { return this._liste; }
-    ;
+    get liste() {
+        return this._liste;
+    }
     ajouterVehicule(vehicule) {
         this._liste.push(vehicule);
     }
@@ -44,10 +47,12 @@ class ParAuto {
         this._voitures = new ListeVehicules();
         this._bus = new ListeVehicules();
     }
-    get voitures() { return this._voitures; }
-    ;
-    get bus() { return this._bus; }
-    ;
+    get voitures() {
+        return this._voitures;
+    }
+    get bus() {
+        return this._bus;
+    }
     ajouterVehicule(vehicule) {
         if (vehicule.type === TypeVehicule.VOITURE) {
             this._voitures.ajouterVehicule(vehicule);
@@ -74,17 +79,24 @@ class ParAuto {
             console.log("Immatriculation : " + b.immatriculation);
         }
     }
+    getVehicules() {
+        let tab = [];
+        tab.push(...this._bus.liste, ...this._voitures.liste);
+        return tab;
+    }
 }
-let bus1 = new Bus("XX1111XX");
-let bus2 = new Bus("YY2222YY");
-let v1 = new Voiture("AB1111CD");
-let v2 = new Voiture("EF2222GH");
 let parcMGA = new ParAuto();
-parcMGA.afficherParc();
-parcMGA.ajouterVehicule(bus1);
-parcMGA.ajouterVehicule(bus2);
-parcMGA.ajouterVehicule(v1);
-parcMGA.ajouterVehicule(v2);
-parcMGA.afficherParc();
-parcMGA.louerVehicule(TypeVehicule.VOITURE);
-parcMGA.afficherParc();
+parcMGA.ajouterVehicule(new Bus("XX1111XX"));
+parcMGA.ajouterVehicule(new Bus("YY2222YY"));
+parcMGA.ajouterVehicule(new Voiture("AB1111CD"));
+parcMGA.ajouterVehicule(new Voiture("EF2222GH"));
+console.log(parcMGA.getVehicules());
+const creerListeVehiculeSelect = () => {
+    let txt = "";
+    for (let v of parcMGA.getVehicules()) {
+        txt += `<option value="${v.immatriculation}">${v.type} : ${v.immatriculation}</option>`;
+    }
+    return txt;
+};
+const selectListe = document.querySelector("#listeVehicule");
+selectListe.innerHTML = creerListeVehiculeSelect();
